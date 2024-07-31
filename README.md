@@ -6,12 +6,16 @@
 
 In a terminal run the following commands from the root folder of the forked project. 
 
-Windows
+#### Windows
+```
+py -m venv .\.venv
+```
+Or
 ```
 python -m venv .\.venv
 ```
 
-macOS & Linux
+#### macOS & Linux
 ```
 python -m venv ./.venv
 ```
@@ -20,14 +24,14 @@ Once that completes, also run this command from the same folder.
 
 Windows
 ```
-venv\Scripts\activate.bat
+.\.venv\Scripts\activate
 ```
 
 macOS & Linux
 ```
 source venv/bin/activate
 ```
-
+### Install Dependencies
 Now that you are working in the virtualenv, install the project dependencies with the following command.
 
 ```
