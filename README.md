@@ -22,14 +22,14 @@ python -m venv ./.venv
 
 Once that completes, also run this command from the same folder.
 
-Windows
+#### Windows
 ```
 .\.venv\Scripts\activate
 ```
 
-macOS & Linux
+#### macOS & Linux
 ```
-source venv/bin/activate
+source .venv/bin/activate
 ```
 ### Install Dependencies
 Now that you are working in the virtualenv, install the project dependencies with the following command.
@@ -44,6 +44,17 @@ In order to verify that everything is setup correctly, run the following command
 
 ```
 pytest
+```
+
+### Running
+#### MacOS
+```
+./.venv/bin/python openai-streaming-handler.py
+```
+
+#### Windows
+```
+py openai-streaming-handler.py
 ```
 
 Every time you want to check your work locally you can type that command, and it will report the status of every task in the project.
