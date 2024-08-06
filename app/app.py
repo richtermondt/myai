@@ -1,6 +1,7 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, render_template, request
+from handler import openai_handler
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
@@ -15,8 +16,11 @@ def index():
     if request.method == "POST":
         print("POST")
         query = request.form.get("query")
-        print(query)
-    return render_template("index.html")
+        reply = openai_handler.chat(query)
+        print(query + " " + reply)
+        return render_template("index.html", reply=reply)
+    else:
+        return render_template("index.html")
 
 # main driver function
 if __name__ == '__main__':

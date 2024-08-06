@@ -19,6 +19,10 @@
 </textarea>
 <button type="submit">Send</button>
 </form>
+{% if reply %}
+    <h3>Reply:</h3>
+    <p>{{ reply }}</p>
+{% endif %}
 {% endblock %}
  
  
