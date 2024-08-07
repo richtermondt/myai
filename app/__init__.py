@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -9,6 +10,7 @@ def create_app():
     app = Flask(__name__)
     # Configure the app here if needed
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
     db.init_app(app)
     with app.app_context():
@@ -25,15 +27,12 @@ def create_app():
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return User.query.get(int(user_id))
     
-    # Import the Blueprint
+    # Import the main Blueprint and register it
     from .routes import main as main_blueprint
-
+    app.register_blueprint(main_blueprint)
+    
     # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
-
-
-    # Register the Blueprint
-    app.register_blueprint(main_blueprint)
 
     return app

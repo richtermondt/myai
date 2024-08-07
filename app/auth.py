@@ -2,13 +2,27 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models import User
+import logging
 from . import db
 
 auth = Blueprint('auth', __name__)
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+file_handler = logging.FileHandler('app.log')
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logging.getLogger().addHandler(file_handler)
+
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    logging.debug("Rendering login template")
+    try:
+        return render_template('login.html')
+    except Exception as e:
+        logging.error("Error rendering template: %s", e)
+        return "An error occurred while rendering the template."
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -53,7 +67,7 @@ def signup_post():
         return redirect(url_for('auth.signup'))
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='pbkdf2', salt_length=16))
 
     # add the new user to the database
     db.session.add(new_user)
