@@ -2,7 +2,16 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+file_handler = logging.FileHandler('app.log')
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logging.getLogger().addHandler(file_handler)
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
 
@@ -14,7 +23,16 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
     db.init_app(app)
-    
+
+    # Configure logging
+    logging.basicConfig(level=logging.DEBUG)
+    file_handler = logging.FileHandler('app.log')
+    file_handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(file_handler)
+
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)

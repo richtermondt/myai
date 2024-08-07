@@ -7,19 +7,12 @@ from . import db
 
 auth = Blueprint('auth', __name__)
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-file_handler = logging.FileHandler('app.log')
-file_handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-logging.getLogger().addHandler(file_handler)
+logger = logging.getLogger(__name__)
 
 
 @auth.route('/login')
 def login():
-    logging.debug("Rendering login template")
+    logger.debug("Rendering login template")
     try:
         return render_template('login.html')
     except Exception as e:
@@ -57,7 +50,7 @@ def signup():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    return redirect(url_for('auth.login'))
 
 
 @auth.route('/signup', methods=['POST'])
