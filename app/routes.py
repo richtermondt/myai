@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
+from openai import OpenAI
 
 from app.handler import openai_handler
 
@@ -21,4 +22,28 @@ def index():
 @main.route('/profile')
 def profile():
     return render_template('profile.html', name=current_user.name)
+
+@main.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+@main.route("/answer", methods=["GET", "POST"])
+def answer():
+    client = OpenAI()
+    data = request.get_json()
+    message = data["message"]
+
+    def generate():
+        stream = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": message}],
+            stream=True
+        ) 
+
+        for chunk in stream:
+            if chunk.choices[0].delta.content is not None:
+                yield(chunk.choices[0].delta.content)
+
+    return generate(), {"Content-Type": "text/plain"}
+
 
