@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -9,17 +10,26 @@ from .log_config import configure_logging
 db = SQLAlchemy()
 login_manager = LoginManager()
 
+logger = logging.getLogger(__name__)
+
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    print("SECRET_KEY:", app.config.get('SECRET_KEY'))
-    print("SQLALCHEMY_DATABASE_URI:", app.config.get('SQLALCHEMY_DATABASE_URI'))
+
     db.init_app(app)
+    logger.info("Database initialized")
+
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
+    logger.info("Login manager initialized")
 
     configure_logging()
+    logger.info("Logging configured")
+
+    logger.info("App configuration:")
+    logger.info("SQLALCHEMY_DATABASE_URI: %s",
+                app.config.get('SQLALCHEMY_DATABASE_URI'))
 
     from .models import User
 
