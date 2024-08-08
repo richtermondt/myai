@@ -1,4 +1,4 @@
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from . import db
 
 
@@ -25,3 +25,9 @@ class Comment(db.Model):
     user = db.relationship('User', backref=db.backref('comments', lazy=True))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('comments', lazy=True))
+
+def create_post(title, content):
+    new_post = Post(title=title, content=content, user_id=current_user.get_id())
+    db.session.add(new_post)
+    db.session.commit()
+    return new_post

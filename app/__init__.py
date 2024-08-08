@@ -1,54 +1,34 @@
-import os
 from flask import Flask
-from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-import logging
+from flask_login import LoginManager
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-file_handler = logging.FileHandler('app.log')
-file_handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-logging.getLogger().addHandler(file_handler)
-# init SQLAlchemy so we can use it later in our models
+from app.config import Config
+
+from .log_config import configure_logging
+
 db = SQLAlchemy()
-
+login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
-    # Configure the app here if needed
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
+    app.config.from_object(Config)
+    print("SECRET_KEY:", app.config.get('SECRET_KEY'))
+    print("SQLALCHEMY_DATABASE_URI:", app.config.get('SQLALCHEMY_DATABASE_URI'))
     db.init_app(app)
-
-    # Configure logging
-    logging.basicConfig(level=logging.DEBUG)
-    file_handler = logging.FileHandler('app.log')
-    file_handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-    logging.getLogger().addHandler(file_handler)
-
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+
+    configure_logging()
 
     from .models import User
 
     @login_manager.user_loader
     def load_user(user_id):
-        # since the user_id is just the primary key of our user table, use it in the query for the user
         return User.query.get(int(user_id))
 
-    # Import the main Blueprint and register it
     from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 

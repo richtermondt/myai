@@ -38,20 +38,14 @@ def chat():
 
 @main.route("/answer", methods=["GET", "POST"])
 def answer():
-    client = OpenAI()
     data = request.get_json()
     message = data["message"]
 
     def generate():
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": message}],
-            stream=True
-        )
-
-        for chunk in response:
-                if chunk.choices[0].delta.content is not None:
-                    yield(chunk.choices[0].delta.content)
+        streamer = OpenAIStreamer()
+        response = streamer.chat(message)
+        for res in response:
+            yield res       
 
     return Response(generate(), content_type="text/plain")
     
