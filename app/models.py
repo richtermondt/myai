@@ -26,8 +26,9 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('comments', lazy=True))
 
-def create_post(title, content):
-    new_post = Post(title=title, content=content, user_id=current_user.get_id())
+
+def create_post(title, content, user_id):
+    new_post = Post(title=title, content=content, user_id=user_id)
     db.session.add(new_post)
     db.session.commit()
     return new_post

@@ -9,6 +9,7 @@ from .log_config import configure_logging
 db = SQLAlchemy()
 login_manager = LoginManager()
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
