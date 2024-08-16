@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @main.route('/', methods=["GET", "POST"])
+@login_required
 def index():
     if request.method == "POST":
         app.logger.info("POST request received")

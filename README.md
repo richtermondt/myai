@@ -37,28 +37,30 @@ Now that you are working in the virtualenv, install the project dependencies wit
 ```
 pip install -r requirements.txt
 ```
+### Create database
+The following command creates a new, empty database:
+```
+./.venv/bin/python tests/create_database.py
+```
+After creating the database you need to create a new user. Run the application (seeing Running Flask section for instructions), then navigate to "/signup" to create a new user.
 
 ### Verify Setup
 
-In order to verify that everything is setup correctly, run the following command, which should show you the failing tests. This is good! We'll be fixing this test once we jump into the build step.
-
+In order to verify that everything is setup correctly, run the following command, which should show you any failing tests. 
 ```
 pytest
 ```
+Every time you want to check your work locally you can type that command, and it will report the status of every task in the project.
 
-### Running
+### Direct Python Execution
 #### MacOS
 ```
 ./.venv/bin/python openai-streaming-handler.py
 ```
-
 #### Windows
 ```
 py openai-streaming-handler.py
 ```
-
-Every time you want to check your work locally you can type that command, and it will report the status of every task in the project.
-
-### Previewing Your Work
+### Running in Flask
 
 You can preview your work by running `flask run` in the root of your fork and then visit`http://localhost:5000` in your browser.

@@ -1,18 +1,7 @@
-<!DOCTYPE html>
-<html>
- 
-<head>
-    <title>FlaskTest</title>
-</head>
- 
-<body>
+{% extends "base.html" %}
+{% block content %}
     <h2>Welcome To MYAI </h2>
-    <h4>Flask: Rendering Templates</h4>
- <!-- this section can be replaced by a child document -->  
-{% block body %}
- 
- 
-<p>This is a Flask application.</p>
+    <p>MYAI is a simple chatbot application built with Flask.</p>
 <form action="{{ url_for("main.index")}}" method="post">
 <label for="query">Query:</label>
 <textarea type="text" id="query" name="query" placeholder="query">
@@ -24,8 +13,3 @@
     <p>{{ reply }}</p>
 {% endif %}
 {% endblock %}
- 
- 
-</body>
- 
-</html>
