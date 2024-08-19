@@ -1,4 +1,8 @@
-# Build a Job Board with Python & Flask
+# Build a Chat Bot with Python & Flask
+
+## Setup Local Environment
+### Environment Varibles
+A Evironment variable named OPENAI_API_KEY and containing your OpenAI API key. 
 
 ## Verify Local Environment
 

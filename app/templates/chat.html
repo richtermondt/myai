@@ -1,41 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>MYAI Chat</h1>
-    <form>
-        <textarea id="input" placeholder="Enter your message" cols="50"></textarea>
-        <button type="submit">Send</button>
-    </form>
-    <pre id="body"></pre>
-    
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        const body = document.getElementById('body');
-        const submit_btn = document.querySelector('button');
-        const input = document.getElementById('input');
+<h1>MYAI Chat</h1>
+<form>
+    <textarea id="input" placeholder="Enter your message" cols="50"></textarea>
+    <button type="submit">Send</button>
+</form>
+<pre id="body"></pre>
 
-        submit_btn.addEventListener("click", async (e) => {
-            e.preventDefault();
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    const body = document.getElementById('body');
+    const submit_btn = document.querySelector('button');
+    const input = document.getElementById('input');
 
-            const response = await fetch("/answer", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({message: input.value})
-            });
+    submit_btn.addEventListener("click", async (e) => {
+        e.preventDefault();
 
-            const reader = response.body.getReader();
-            let output = "";
+        const response = await fetch("/answer", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message: input.value})
+        });
 
-            while (true) {
-                const { done, value } = await reader.read();
-                output += new TextDecoder().decode(value);
-                body.innerHTML = marked.parse(output);
+        const reader = response.body.getReader();
+        let output = "";
 
-                if (done) {
-                    return;
-                }
+        while (true) {
+            const { done, value } = await reader.read();
+            output += new TextDecoder().decode(value);
+            body.innerHTML = marked.parse(output);
+
+            if (done) {
+                return;
             }
+        }
 
-        })
-    </script>
+    })
+</script>
 {% endblock %}
