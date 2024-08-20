@@ -6,9 +6,13 @@ services:
       - 5001:5000
     volumes:
       - .:/app
+      - sqlite_data:/app/instance  # Mount the volume to the directory where the SQLite database is stored
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
       - FLASK_RUN_HOST=0.0.0.0
       - FLASK_RUN_PORT=5000
       - OPENAI_API_KEY
+
+volumes:
+  sqlite_data:
