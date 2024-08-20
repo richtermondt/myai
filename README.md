@@ -2,9 +2,25 @@
 
 ## Setup Local Environment
 
-### Environment Varibles
+### Required Environment Varibles
 
-A Evironment variable named OPENAI_API_KEY and containing your OpenAI API key.
+**You must create an evironment variable named OPENAI_API_KEY and containing your OpenAI API key.**
+
+#### Windows
+
+You can create or change environment variables in the Environment Variables dialog box or by excuting the commonad below. To open the Environment Variables dialog box: In Search, search for and then select: Edit environment variables for your account.
+
+##### Command Line
+
+```bash
+set OPENAI_API_KEY=Your OpenAI API Key
+```
+
+#### MacOS/Linux
+
+```bash
+export OPENAI_API_KEY=Your OpenAI API Key
+```
 
 ## Verify Local Environment
 
